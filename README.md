@@ -6,3 +6,12 @@ Producing an ISA is often hard and has little success per production. The aim is
 BigRISC is the design ideal, with reducing the instruction set duplication to achieve computational use density. For example the WTO instruction makes a write target override of a 2 operand instruction unlike the RISC of long 32 bit opcodes first and then on to thumb like. Start small at 16 bit opcodes and expand some to 32 bit.
 
 Given progress in caching and OoO it is no longer wrote practice that a load store architecture is superior. As code density can improve with memory to memory architecture and as a result more can be fit in a cache, the CISC is comming back but with inefficient junk such as too many addressing modes and infrequently used silicon area committals.
+
+## Vectors
+For example a floating point register set is not included as a separate set, and the main registers are used. This prevents them being left empty as wide SIMD registers become normal for floating point. 64 opcodes are reserved as prefixes for vector processing.
+
+## Registers
+There are basically 20 registers, of which 8 are full function addressing registers (An), 8 are non addressing (Dn) but have a modulo carry at the instruction operation width to use the high part independently. The remaining 4 are the program counter (PC) and 3 other registers with automated indexing (IP, SP and RP). This is a good compromise on efficient opcode size. If all 16 main registers were fully addressing the last 4 could not exist and many opcodes would be removed. This would leave 15 plus the program counter, and code density would suffer badly. An extra 8 registers could be provided if addressing was only done through the 3 special registers (and fetches through the PC), but code density would again suffer.
+
+## Yes, it's 68k inspired
+A number of overly complex variant instructions were dropped, a new opcode format was decided and all operations can be performed on the An registers. This makes the Dn registers the lesser, but not having carrying into upper parts makes up for not needing the register to linearly address. It is reasonably easy to use them as 16 register halves at 32 bits each.
