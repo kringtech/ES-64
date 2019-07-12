@@ -25,4 +25,6 @@ As yet nothing but a CFR (cache flush then read address) instruction has been de
 ## Data formats
 SIMD is just more a thing than MISD oppertunity. Using compact data forms was the reason word, long and quad is available on almost all instructions. Byte might have been good but the bit could not be wasted. Along with Unicode and half size manipulations this is something that is still reasonable to do. A fast indexed form of UTF-8 is more of a software issue. Code pages will still be a compressed solution for some data processing tasks, even if the underlying disk is compressed.
 
+## Pseudo opcodes in assembly
+LBL is used to make a label. It makes parsing consistent. DAT is used to make a data entry of specific size. PC immediate mode is by # prefix or (PC+) and DAT of correct length. All quick format instructions use # prefix for literal consistency. ORG is for origin of assembly. STR is for a UTF-16 string. WRI is for a writeable origin which could contain code but advised against it. BLK is for allocation of blank space, or a rounded up amount.
 
