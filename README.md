@@ -28,3 +28,12 @@ SIMD is just more a thing than MISD oppertunity. Using compact data forms was th
 ## Pseudo opcodes in assembly
 LBL is used to make a label. It makes parsing consistent. DAT is used to make a data entry of specific size. PC immediate mode is by # prefix or (PC+) and DAT of correct length. All quick format instructions use # prefix for literal consistency. ORG is for origin of assembly. STR is for a UTF-16 string. WRI is for a writeable origin which could contain code but advised against it. BLK is for allocation of blank space, or a rounded up amount.
 
+## Instruction code formats
+Apart from few exceptions the format is regular. The most notable exception so far is CLR. This clears a register but uses the read early src operand slot and not the write slot. This makes sense for early retirement of the instruction with dependent earlier writes still in the pipeline, and the src operand decode of the register can gate a reset on the register. As this has a low cycle latency the clear does not delay the pipeline a read register waiting on writing would never happen. In a similar way MOV could complete early as long a synthetic wait on the target happens to stop movement overwrite happening too early to be undone later in the pipeline.
+
+The high regularity makes for easy encoding. In practice I think a stategy of flexible encode with a comprehensive decode and equality test is the best way to point out any mnemonic errors. It prevents duplication of parse logic and cuts opportunity for errors. This dissembly checking builds the assembler out of the simulated decoder and forces design of a cannonical decoder from binary machine words.
+
+
+
+
+
